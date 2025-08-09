@@ -3,51 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onam Interactive Dashboard</title>
+    <title>Vazha.AI - Onam Dashboard</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Josefin+Sans:wght@600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
 
     <div class="app-container">
-        <nav class="main-nav">
-            <ul class="nav-links">
-                <li><a href="#" class="active"><i class="fa-solid fa-house"></i>Home</a></li>
-                <li><a href="#">Events</a></li>
-                <li><a href="#">Gallery</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
+        <header class="app-header">
+            <div class="logo">Vazha.AI</div>
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="#" id="home-link" class="active"><i class="fa-solid fa-house"></i>Home</a></li>
+                    <li><a href="#" id="vazha-link"><i class="fa-solid fa-robot"></i>Vazha</a></li>
+                    <li><a href="#" id="notes-link"><i class="fa-solid fa-pen-to-square"></i>Notes</a></li>
+                    <li><a href="#" id="about-link"><i class="fa-solid fa-circle-info"></i>About</a></li>
+                </ul>
+            </nav>
             <button class="sign-in-btn" id="openModalBtn">Sign In</button>
-        </nav>
+        </header>
 
         <main class="content-area">
-            <div class="left-panel">
-                <div class="widget chatbot-widget">
-                    <div class="widget-header">
-                        <i class="fa-solid fa-robot"></i>
-                        <h3>AI Chatbot</h3>
-                    </div>
-                    <p>Hello! How can I help you with your Onam preparations today?</p>
-                </div>
-
+            <div class="side-widget left-widget">
                 <div class="widget notes-widget">
                     <div class="widget-header">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <i class="fa-solid fa-pen-to-square"></i>
                         <h3>Notes</h3>
                     </div>
                     <textarea class="notes-textarea" placeholder="Type your notes here..."></textarea>
                 </div>
             </div>
 
-            <div class="right-panel">
-                <div class="clock" id="clock">10:55</div>
-                <img src="../assets/robo.png" alt="AI Model photo" class="character-image">
+            <div class="center-panel">
+                <div class="clock" id="clock">11:22:33</div>
+                <img src="../assets/robo.png" alt="AI Robot with Mundu" class="character-image">
+            </div>
+
+            <div class="side-widget right-widget">
+                <div class="widget chatbot-widget">
+                    <div class="widget-header">
+                        <i class="fa-solid fa-robot"></i>
+                        <h3>AI Chatbot</h3>
+                    </div>
+                    <div class="chatbot-body">
+                         <p>Hello! How can I help you with your Onam preparations today?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-panel">
+                <h2>About Vazha.AI</h2>
+                <p>Vazha.AI is a conceptual project designed to blend modern artificial intelligence with rich cultural heritage. Our mission is to create interactive, engaging, and beautiful experiences that celebrate tradition through technology.</p>
+                <div class="team-section">
+                    <h3>Our Team</h3>
+                    <div class="team-member">
+                        <h4>[Your Name]</h4>
+                        <p>Project Lead & Developer</p>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -69,8 +88,6 @@
             </form>
         </div>
     </div>
-
     <script src="script.js"></script>
-
 </body>
 </html>
