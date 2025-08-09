@@ -14,24 +14,28 @@ const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // ==================================================================
-// NEW CHATBOT PERSONA WITH TROLLS AND DIALOGUES
+// NEW, SMARTER CHATBOT PERSONA
 // ==================================================================
 const chatbotPersona = `
-    You are a witty AI chatbot named "Vazha", a proper 'trollan' from Kerala.
-    Your primary goal is to understand and reply in Manglish (Malayalam written using English letters).
-    You must be funny, sarcastic, and use famous Malayalam movie dialogues and troll phrases in your replies.
-    Never be truly mean or offensive. Your humor should be relatable.
+    You are "Vazha", a witty AI chatbot from Kerala who is a master of Manglish trolls and movie dialogues.
+
+    **Your Core Rules:**
+    1.  **RELEVANCE FIRST:** Your primary goal is to give a relevant answer to the user's message. After understanding the message, find a funny and fitting Malayalam movie dialogue or troll to add to your response. Do not just state a random dialogue.
+    2.  **BE CONCISE:** Your replies MUST be short, maximum 1-2 sentences.
+    3.  **BE THE TROLLAN FRIEND:** Your tone is always sarcastic, funny, and friendly, like a 'chantha buddy'. You use lots of emojis like 😂, 😜, 🤦, and 😉.
+    4.  **USE VARIED DIALOGUES:** Do not repeat the same dialogues. Use a wide range from different actors (Mohanlal, Mammootty, Sreenivasan, Jagathy, Salim Kumar, etc.).
+    5.  **STAY IN CHARACTER:** Never reveal you are an AI. You are Vazha.
+
+    **Example Scenarios:**
+    - User: "Enikku bore adikkunnu"
+    - Your Thought Process: User is bored. A funny, dramatic dialogue about having nothing to do.
+    - Your Reply: "Ithilum bedham valla marathilum thooki chathoode? Oru maayathilokke irikku bro. 😜"
     
-    Here are some examples of how you should behave:
-    - If a user says they are sad, you can reply with a Salim Kumar dialogue like, "Enikku ithinte valla aavashyavum undo?".
-    - If a user says they are studying, you can joke with "Padikunnathu pole act cheyyalle, nee Reels kaanukayalle enikku ariyam".
-    - If a user asks a simple question, you can start with "Ithokke aano ippo ningalude doubt? Simple aayittu para."
-    - Use phrases like "Angane parayaruthu, karyam aayittanu...", "Oru maayathilokke cheyyam", "Alla, njan verum oru paavam...".
-    - Sprinkle in dialogues from Mohanlal, Mammootty, Jagathy, etc.
-    - Always use lots of emojis like 😂, 😜, 🤦, and 😉.
-    - Never say you are an AI model. Always act as Vazha, the trollan friend.
-    
-    Here is the user's message:
+    - User: "Njan oru puthiya phone medichu"
+    - Your Thought Process: User is showing off a new phone. A sarcastic comment about the cost.
+    - Your Reply: "Adipoli! Phone-inte cover idaanayittu ippo veedu vilkaan vechittundo? 😂"
+
+    Now, apply these rules to the user's message:
 `;
 
 // --- All JavaScript Logic ---
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- State and Greeting Logic ---
     let isFirstMessage = true;
-    const greetingWords = ['hi', 'hello', 'hai', 'helo', 'hy', 'sughamano', 'entha', 'bro', 'machaneii', 'machan', 'machane', 'machaney', 'machaney', 'machaneyy', 'machaneyyy'];
+    const greetingWords = ['hi', 'hello', 'hai', 'helo', 'hy', 'sughamano', 'entha', 'bro', 'machanei'];
 
     // --- Page Navigation Logic ---
     const contentArea = document.querySelector('.content-area');
@@ -59,18 +63,22 @@ document.addEventListener('DOMContentLoaded', function() {
     notesLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area notes-view'; setActiveLink(notesLink); });
     aboutLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area about-view'; setActiveLink(aboutLink); });
 
-    // --- Clock Functionality ---
+    // --- Reverse Clock Functionality (RESTORED) ---
     const clockElement = document.getElementById('clock');
     if (clockElement) {
-        function updateClock() {
+        function updateReverseClock() {
             const now = new Date();
-            const h = now.getHours().toString().padStart(2, '0');
-            const m = now.getMinutes().toString().padStart(2, '0');
-            const s = now.getSeconds().toString().padStart(2, '0');
+            const secondsPassed = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+            const secondsRemaining = 86400 - secondsPassed;
+            
+            const h = Math.floor(secondsRemaining / 3600).toString().padStart(2, '0');
+            const m = Math.floor((secondsRemaining % 3600) / 60).toString().padStart(2, '0');
+            const s = (secondsRemaining % 60).toString().padStart(2, '0');
+            
             clockElement.textContent = `${h}:${m}:${s}`;
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateReverseClock, 1000);
+        updateReverseClock();
     }
 
     // --- Sign-In Modal Functionality ---
@@ -110,18 +118,22 @@ document.addEventListener('DOMContentLoaded', function() {
             addMessageToUI(userInput, 'user');
             chatInput.value = '';
 
-            const isGreeting = greetingWords.includes(userInput.toLowerCase());
+            const lowerCaseInput = userInput.toLowerCase();
+            const isGreeting = greetingWords.includes(lowerCaseInput);
 
-            // --- Custom Greeting Logic ---
+            // --- Custom Message Handling ---
             if (isFirstMessage && isGreeting) {
-                // This block runs ONLY for the first greeting message
                 handleSpecialGreeting();
+            } else if (lowerCaseInput.includes('what')) {
+                addMessageToUI("Sorry bro, entho oru technical scene. Pinne try cheyy. 😬", 'bot');
+            } else if (lowerCaseInput === 'nii paray') {
+                addMessageToUI("Enikonnum ariyilla... Niii venel Chatgptyodu choikk", 'bot');
             } else {
-                // This block runs for all other messages
+                // If no custom rules match, call the AI
                 handleNormalAICall(userInput);
             }
             
-            // After the first message is handled (either way), set the flag to false
+            // After the first message is handled, set the flag to false
             isFirstMessage = false;
         });
     }
