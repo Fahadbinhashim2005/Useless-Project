@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onam Interactive Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <nav class="main-nav">
+            <ul class="nav-links">
+                <li><a href="#" class="active"><i class="fa-solid fa-house"></i>Home</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+            <button class="sign-in-btn" id="openModalBtn">Sign In</button>
+        </nav>
+
+        <main class="content-area">
+            <div class="left-panel">
+                <div class="widget chatbot-widget">
+                    <div class="widget-header">
+                        <i class="fa-solid fa-robot"></i>
+                        <h3>AI Chatbot</h3>
+                    </div>
+                    <p>Hello! How can I help you with your Onam preparations today?</p>
+                </div>
+
+                <div class="widget notes-widget">
+                    <div class="widget-header">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <h3>Notes</h3>
+                    </div>
+                    <textarea class="notes-textarea" placeholder="Type your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="clock" id="clock">10:55</div>
+                <img src="https://i.ibb.co/L5hH9N4/onam-couple-illustration.png" alt="Couple in traditional Onam attire" class="character-image">
+            </div>
+        </main>
+    </div>
+
+    <div id="signInModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModalBtn">&times;</span>
+            <h2>Welcome Back!</h2>
+            <form>
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
