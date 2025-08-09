@@ -1,3 +1,55 @@
+/* --- 0. INTRO ANIMATION STYLES --- */
+#intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--primary-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeOutOverlay 3s forwards;
+}
+
+#intro-logo {
+    width: 150px; /* Adjust size as needed */
+    height: auto;
+    animation: scaleUpLogo 2.5s ease-in-out forwards;
+}
+
+.app-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.app-container {
+    transition: opacity 0.8s ease-in-out 2s; /* Start fading in after 2 seconds */
+}
+
+@keyframes scaleUpLogo {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(20);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOutOverlay {
+    0%, 80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+
 /* --- 1. SETUP & DEFAULTS --- */
 :root {
     --primary-bg: #FEFDF9;
@@ -54,7 +106,21 @@ body {
 }
 
 /* --- 3. HEADER & NAVIGATION COMPONENTS --- */
-.logo { font-family: 'Josefin Sans', sans-serif; font-size: 2rem; font-weight: 600; color: var(--text-color); }
+.logo {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mini-logo {
+    height: 35px; /* Adjust size as needed */
+    width: auto;
+}
+
 .main-nav {
     position: absolute;
     left: 50%;

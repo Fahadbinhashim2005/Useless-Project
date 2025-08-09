@@ -4,8 +4,6 @@ import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 // ==================================================================
 // PASTE YOUR GEMINI API KEY HERE
 // ==================================================================
-// WARNING: This key is visible to anyone who visits your site!
-// This method is ONLY for personal learning and local testing.
 const API_KEY = "AIzaSyDKQz4381Tft0e-Fwg96JZWHSrg15mqrX8";
 // ==================================================================
 
@@ -41,6 +39,21 @@ const chatbotPersona = `
 // --- All JavaScript Logic ---
 document.addEventListener('DOMContentLoaded', function() {
 
+    // --- Intro Animation Logic ---
+    const introOverlay = document.getElementById('intro-overlay');
+    const appContainer = document.querySelector('.app-container');
+
+    // After 2.8 seconds, hide the intro and show the app
+    setTimeout(() => {
+        if (introOverlay) {
+            introOverlay.style.display = 'none';
+        }
+        if (appContainer) {
+            appContainer.classList.remove('hidden');
+        }
+    }, 2800);
+
+
     // --- State and Greeting Logic ---
     let isFirstMessage = true;
     const greetingWords = ['hi', 'hello', 'hai', 'helo', 'hy', 'sughamano', 'entha', 'bro', 'machanei'];
@@ -63,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     notesLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area notes-view'; setActiveLink(notesLink); });
     aboutLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area about-view'; setActiveLink(aboutLink); });
 
-    // --- Reverse Clock Functionality (RESTORED) ---
+    // --- Reverse Clock Functionality ---
     const clockElement = document.getElementById('clock');
     if (clockElement) {
         function updateReverseClock() {
@@ -104,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- CHATBOT LOGIC (INTEGRATED AND REFACTORED) ---
+    // --- CHATBOT LOGIC ---
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
     const chatWindow = document.getElementById('chat-window');
@@ -121,25 +134,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const lowerCaseInput = userInput.toLowerCase();
             const isGreeting = greetingWords.includes(lowerCaseInput);
 
-            // --- Custom Message Handling ---
             if (isFirstMessage && isGreeting) {
                 handleSpecialGreeting();
-            } else if (lowerCaseInput.includes('what')) {
+            } else if (lowerCaseInput.includes('what') || lowerCaseInput.includes('why') || lowerCaseInput.includes('how') || lowerCaseInput.includes('who') || lowerCaseInput.includes('where')) {
                 addMessageToUI("Sorry bro, entho oru technical scene. Pinne try cheyy. 😬", 'bot');
             } else if (lowerCaseInput === 'nii paray') {
-                addMessageToUI("Enikonnum ariyilla... Niii venel Chatgptyodu choikk", 'bot');
+                addMessageToUI("Enikonnum ariyilla... Niii venel Chatgptyodu choikk 😂😂", 'bot');
             } else {
-                // If no custom rules match, call the AI
                 handleNormalAICall(userInput);
             }
             
-            // After the first message is handled, set the flag to false
             isFirstMessage = false;
         });
     }
     
     function handleSpecialGreeting() {
-        // Display the custom multi-part greeting with delays
         addMessageToUI("machaneii!!! You Agaaiiinnn...", 'bot');
         showTypingIndicator();
         setTimeout(() => {
@@ -149,27 +158,21 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 removeTypingIndicator();
                 addMessageToUI("Enthaa machaneii scene 😉", 'bot');
-            }, 1500); // Delay for the third message
-        }, 1200); // Delay for the second message
+            }, 1500);
+        }, 1200);
     }
 
     async function handleNormalAICall(userInput) {
         showTypingIndicator();
         try {
             const prompt = `${chatbotPersona} "${userInput}"`;
-            
-            const generationConfig = {
-              temperature: 0.9, // Makes the AI more creative
-            };
-
+            const generationConfig = { temperature: 0.9 };
             const result = await model.generateContent({
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
                 generationConfig,
             });
-
             const response = await result.response;
             const text = response.text();
-            
             removeTypingIndicator();
             addMessageToUI(text, 'bot');
         } catch (error) {
@@ -181,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function addMessageToUI(message, sender) {
         const messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message', `${sender}-message`);
+        messageElement.classList.add('chat-message', `${sender-message}`);
         messageElement.textContent = message;
         chatWindow.appendChild(messageElement);
         chatWindow.scrollTop = chatWindow.scrollHeight;

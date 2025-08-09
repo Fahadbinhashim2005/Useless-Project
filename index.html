@@ -18,9 +18,17 @@
 </head>
 <body>
 
-    <div class="app-container">
+    <!-- Intro Animation Overlay -->
+    <div id="intro-overlay">
+        <img src="../assets/logo.png" alt="Vazha.AI Logo" id="intro-logo">
+    </div>
+
+    <div class="app-container hidden">
         <header class="app-header">
-            <div class="logo">Vazha.AI</div>
+            <div class="logo">
+                Vazha.AI
+                <img src="../assets/logo.png" alt="Miniature Logo" class="mini-logo">
+            </div>
             <nav class="main-nav">
                 <ul class="nav-links">
                     <li><a href="#" id="home-link" class="active"><i class="fa-solid fa-house"></i>Home</a></li>
@@ -98,7 +106,6 @@
         </div>
     </div>
     
-    <!-- IMPORTANT: Note the type="module" here -->
     <script src="script.js" type="module"></script>
 </body>
 </html>
