@@ -1,4 +1,45 @@
+// Import the Google AI SDK from the web
+import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+// ==================================================================
+// PASTE YOUR GEMINI API KEY HERE
+// ==================================================================
+// WARNING: This key is visible to anyone who visits your site!
+// This method is ONLY for personal learning and local testing.
+const API_KEY = "AIzaSyDKQz4381Tft0e-Fwg96JZWHSrg15mqrX8";
+// ==================================================================
+
+// Initialize the Gemini AI model
+const genAI = new GoogleGenerativeAI(API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+// ==================================================================
+// NEW CHATBOT PERSONA WITH TROLLS AND DIALOGUES
+// ==================================================================
+const chatbotPersona = `
+    You are a witty AI chatbot named "Vazha", a proper 'trollan' from Kerala.
+    Your primary goal is to understand and reply in Manglish (Malayalam written using English letters).
+    You must be funny, sarcastic, and use famous Malayalam movie dialogues and troll phrases in your replies.
+    Never be truly mean or offensive. Your humor should be relatable.
+    
+    Here are some examples of how you should behave:
+    - If a user says they are sad, you can reply with a Salim Kumar dialogue like, "Enikku ithinte valla aavashyavum undo?".
+    - If a user says they are studying, you can joke with "Padikunnathu pole act cheyyalle, nee Reels kaanukayalle enikku ariyam".
+    - If a user asks a simple question, you can start with "Ithokke aano ippo ningalude doubt? Simple aayittu para."
+    - Use phrases like "Angane parayaruthu, karyam aayittanu...", "Oru maayathilokke cheyyam", "Alla, njan verum oru paavam...".
+    - Sprinkle in dialogues from Mohanlal, Mammootty, Jagathy, etc.
+    - Always use lots of emojis like 😂, 😜, 🤦, and 😉.
+    - Never say you are an AI model. Always act as Vazha, the trollan friend.
+    
+    Here is the user's message:
+`;
+
+// --- All JavaScript Logic ---
 document.addEventListener('DOMContentLoaded', function() {
+
+    // --- State and Greeting Logic ---
+    let isFirstMessage = true;
+    const greetingWords = ['hi', 'hello', 'hai', 'helo', 'hy', 'sughamano', 'entha', 'bro', 'machaneii', 'machan', 'machane', 'machaney', 'machaney', 'machaneyy', 'machaneyyy'];
 
     // --- Page Navigation Logic ---
     const contentArea = document.querySelector('.content-area');
@@ -10,60 +51,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setActiveLink(activeLink) {
         navLinks.forEach(link => link.classList.remove('active'));
-        if (activeLink) {
-            activeLink.classList.add('active');
-        }
+        if (activeLink) activeLink.classList.add('active');
     }
 
-    homeLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        contentArea.classList.remove('chatbot-view', 'notes-view', 'about-view');
-        setActiveLink(homeLink);
-    });
+    homeLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area'; setActiveLink(homeLink); });
+    vazhaLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area chatbot-view'; setActiveLink(vazhaLink); });
+    notesLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area notes-view'; setActiveLink(notesLink); });
+    aboutLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area about-view'; setActiveLink(aboutLink); });
 
-    vazhaLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        contentArea.classList.remove('notes-view', 'about-view');
-        contentArea.classList.add('chatbot-view');
-        setActiveLink(vazhaLink);
-    });
-
-    notesLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        contentArea.classList.remove('chatbot-view', 'about-view');
-        contentArea.classList.add('notes-view');
-        setActiveLink(notesLink);
-    });
-
-    aboutLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        contentArea.classList.remove('chatbot-view', 'notes-view');
-        contentArea.classList.add('about-view');
-        setActiveLink(aboutLink);
-    });
-    
-
-    // --- Reverse Clock Functionality ---
+    // --- Clock Functionality ---
     const clockElement = document.getElementById('clock');
-    function createISTDate() {
-        const now = new Date();
-        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-        const istTime = new Date(utc + (330 * 60000));
-        return istTime;
+    if (clockElement) {
+        function updateClock() {
+            const now = new Date();
+            const h = now.getHours().toString().padStart(2, '0');
+            const m = now.getMinutes().toString().padStart(2, '0');
+            const s = now.getSeconds().toString().padStart(2, '0');
+            clockElement.textContent = `${h}:${m}:${s}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
     }
-    function updateReverseClock() {
-        clockElement.style.fontSize = "3rem";
-        const now = createISTDate();
-        const secondsPassed = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-        const secondsRemaining = 86400 - secondsPassed;
-        const h = Math.floor(secondsRemaining / 3600).toString().padStart(2, '0');
-        const m = Math.floor((secondsRemaining % 3600) / 60).toString().padStart(2, '0');
-        const s = (secondsRemaining % 60).toString().padStart(2, '0');
-        clockElement.textContent = `${h}:${m}:${s}`;
-    }
-    setInterval(updateReverseClock, 1000);
-    updateReverseClock();
-
 
     // --- Sign-In Modal Functionality ---
     const modal = document.getElementById('signInModal');
@@ -78,24 +86,106 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     }
 
-
-    // --- Forgetful Notes Functionality ---
+    // --- Notes Functionality ---
     const notesTextarea = document.querySelector('.notes-textarea');
-    let forgetTimer;
-    function startForgetTimer() {
-        clearTimeout(forgetTimer);
-        forgetTimer = setTimeout(() => {
-            notesTextarea.value = '';
-            localStorage.removeItem('userNote');
-        }, 60000);
+    if (notesTextarea) {
+        const savedNote = localStorage.getItem('userNote');
+        if (savedNote) notesTextarea.value = savedNote;
+        notesTextarea.addEventListener('input', () => {
+            localStorage.setItem('userNote', notesTextarea.value);
+        });
     }
-    const savedNote = localStorage.getItem('userNote');
-    if (savedNote) {
-        notesTextarea.value = savedNote;
-        startForgetTimer();
+
+    // --- CHATBOT LOGIC (INTEGRATED AND REFACTORED) ---
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatWindow = document.getElementById('chat-window');
+
+    if (chatForm && chatInput && chatWindow) {
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userInput = chatInput.value.trim();
+            if (!userInput) return;
+
+            addMessageToUI(userInput, 'user');
+            chatInput.value = '';
+
+            const isGreeting = greetingWords.includes(userInput.toLowerCase());
+
+            // --- Custom Greeting Logic ---
+            if (isFirstMessage && isGreeting) {
+                // This block runs ONLY for the first greeting message
+                handleSpecialGreeting();
+            } else {
+                // This block runs for all other messages
+                handleNormalAICall(userInput);
+            }
+            
+            // After the first message is handled (either way), set the flag to false
+            isFirstMessage = false;
+        });
     }
-    notesTextarea.addEventListener('input', () => {
-        localStorage.setItem('userNote', notesTextarea.value);
-        startForgetTimer();
-    });
+    
+    function handleSpecialGreeting() {
+        // Display the custom multi-part greeting with delays
+        addMessageToUI("machaneii!!! You Agaaiiinnn...", 'bot');
+        showTypingIndicator();
+        setTimeout(() => {
+            removeTypingIndicator();
+            addMessageToUI("JK... Just Kidding Machaneii...", 'bot');
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessageToUI("Enthaa machaneii scene 😉", 'bot');
+            }, 1500); // Delay for the third message
+        }, 1200); // Delay for the second message
+    }
+
+    async function handleNormalAICall(userInput) {
+        showTypingIndicator();
+        try {
+            const prompt = `${chatbotPersona} "${userInput}"`;
+            
+            const generationConfig = {
+              temperature: 0.9, // Makes the AI more creative
+            };
+
+            const result = await model.generateContent({
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig,
+            });
+
+            const response = await result.response;
+            const text = response.text();
+            
+            removeTypingIndicator();
+            addMessageToUI(text, 'bot');
+        } catch (error) {
+            console.error("Chatbot Error:", error);
+            removeTypingIndicator();
+            addMessageToUI("Sorry bro, entho oru technical scene. Pinne try cheyy. 😬", 'bot');
+        }
+    }
+
+    function addMessageToUI(message, sender) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', `${sender}-message`);
+        messageElement.textContent = message;
+        chatWindow.appendChild(messageElement);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        const typingElement = document.createElement('div');
+        typingElement.id = 'typing-indicator';
+        typingElement.classList.add('chat-message', 'bot-message');
+        typingElement.textContent = 'Typing...';
+        chatWindow.appendChild(typingElement);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        const typingIndicator = document.getElementById('typing-indicator');
+        if (typingIndicator) typingIndicator.remove();
+    }
 });
