@@ -125,9 +125,8 @@ body {
     display: none; 
     width: 100%; 
     animation: fadeIn 0.5s ease-in-out;
-    /* THE FIX: Added overflow-y for scrolling */
     overflow-y: auto;
-    padding-right: 15px; /* Add some padding for the scrollbar */
+    padding-right: 15px;
 }
 .content-area.chatbot-view .left-widget, .content-area.chatbot-view .center-panel,
 .content-area.notes-view .right-widget, .content-area.notes-view .center-panel,
