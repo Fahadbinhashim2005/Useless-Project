@@ -1,56 +1,66 @@
 // This ensures the script runs after the entire HTML document has been loaded
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- Live Clock Functionality ---
+    // --- Element Selection ---
     const clockElement = document.getElementById('clock');
 
-    function updateClock() {
+    // --- Helper function to get the current time in IST ---
+    function createISTDate() {
         const now = new Date();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        clockElement.textContent = `${hours}:${minutes}`;
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const istTime = new Date(utc + (330 * 60000)); // IST is UTC+5:30 (330 minutes)
+        return istTime;
     }
 
-    // Update the clock every second
-    setInterval(updateClock, 1000);
-    // Initial call to display clock immediately without a 1-second delay
-    updateClock();
+    // --- Reverse Clock Functionality (IST-aware) ---
+    function updateReverseClock() {
+        // Set the font size consistently
+        clockElement.style.fontSize = "3.5rem";
+        
+        // Get the current time in India
+        const now = createISTDate();
+        const secondsPassed = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+        const totalSecondsInDay = 86400;
+        const secondsRemaining = totalSecondsInDay - secondsPassed;
 
+        const remainingHours = Math.floor(secondsRemaining / 3600);
+        const remainingMinutes = Math.floor((secondsRemaining % 3600) / 60);
+        const remainingSeconds = secondsRemaining % 60;
 
-    // --- Sign-In Modal Functionality ---
+        const displayHours = remainingHours.toString().padStart(2, '0');
+        const displayMinutes = remainingMinutes.toString().padStart(2, '0');
+        const displaySeconds = remainingSeconds.toString().padStart(2, '0');
+
+        clockElement.textContent = `${displayHours}:${displayMinutes}:${displaySeconds}`;
+    }
+
+    // --- Main Clock Interval ---
+    setInterval(updateReverseClock, 1000);
+    updateReverseClock(); // Initial call to display clock immediately
+
+    // --- Sign-In Modal Functionality (Unchanged) ---
     const modal = document.getElementById('signInModal');
     const openBtn = document.getElementById('openModalBtn');
     const closeBtn = document.getElementById('closeModalBtn');
 
-    // Check if all elements exist before adding event listeners
     if (modal && openBtn && closeBtn) {
-        // Function to open the modal
         function openModal() {
             modal.style.display = 'flex';
         }
-
-        // Function to close the modal
         function closeModal() {
             modal.style.display = 'none';
         }
-
-        // Event listeners
         openBtn.addEventListener('click', openModal);
         closeBtn.addEventListener('click', closeModal);
-
-        // Close modal if user clicks outside of the modal content
         window.addEventListener('click', function(event) {
             if (event.target == modal) {
                 closeModal();
             }
         });
-
-        // Optional: Close modal with Escape key
         window.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModal();
             }
         });
     }
-
 });
