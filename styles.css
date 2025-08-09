@@ -10,19 +10,19 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeOutOverlay 5s forwards;
+    animation: fadeOutOverlay 3s forwards;
 }
 #intro-logo {
     width: 150px;
     height: auto;
-    animation: scaleUpLogo 4.5s ease-in-out forwards;
+    animation: scaleUpLogo 2.5s ease-in-out forwards;
 }
 .app-container.hidden {
     opacity: 0;
     pointer-events: none;
 }
 .app-container {
-    transition: opacity 0.8s ease-in-out 4.2s;
+    transition: opacity 0.8s ease-in-out 2.2s;
 }
 @keyframes scaleUpLogo {
     0% { transform: scale(1); opacity: 1; }
@@ -79,7 +79,7 @@ body {
 .widget-header { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; color: var(--text-color); }
 .widget-header i { color: var(--accent-color); }
 .widget-header h3 { font-weight: 600; display: flex; align-items: center; gap: 0.75rem; }
-.clock { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); font-family: monospace; font-weight: 700; color: #2d3436; padding: 0.8rem 1.5rem; border-radius: 15px; letter-spacing: 4px; text-align: center; margin-bottom: 1rem; }
+.clock { background: linear-gradient(45deg, #FFC107, #FDB813); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); font-family: monospace; font-weight: 700; color: white; padding: 0.8rem 1.5rem; border-radius: 15px; letter-spacing: 4px; text-align: center; margin-bottom: 1rem;scale: 125%; }
 .character-image { max-width: 100%; max-height: 85%; object-fit: contain; align-self: center; }
 
 /* --- 5. FORGETFUL NOTES WIDGET --- */
@@ -121,7 +121,14 @@ body {
 .login-btn:hover { box-shadow: 0 6px 20px rgba(253, 184, 19, 0.5); transform: translateY(-2px); }
 
 /* --- 8. VIEW-SWITCHING STYLES --- */
-.about-panel { display: none; width: 100%; animation: fadeIn 0.5s ease-in-out; }
+.about-panel { 
+    display: none; 
+    width: 100%; 
+    animation: fadeIn 0.5s ease-in-out;
+    /* THE FIX: Added overflow-y for scrolling */
+    overflow-y: auto;
+    padding-right: 15px; /* Add some padding for the scrollbar */
+}
 .content-area.chatbot-view .left-widget, .content-area.chatbot-view .center-panel,
 .content-area.notes-view .right-widget, .content-area.notes-view .center-panel,
 .content-area.about-view .left-widget, .content-area.about-view .center-panel, .content-area.about-view .right-widget { flex: 0; width: 0; opacity: 0; overflow: hidden; margin: 0; padding: 0; border: none; }
@@ -130,6 +137,58 @@ body {
 .content-area.chatbot-view .chatbot-widget, .content-area.notes-view .notes-widget { height: 100%; }
 .about-panel h2 { font-size: 2.5rem; color: var(--text-color); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent-color); display: inline-block; }
 .about-panel p { font-size: 1.1rem; line-height: 1.8; max-width: 800px; margin-bottom: 2rem; }
-.team-section h3 { font-size: 1.8rem; margin-bottom: 1rem; }
-.team-member { background: var(--widget-bg); padding: 1rem; border-radius: 10px; border: 1px solid #E9ECEF; display: inline-block; }
-.team-member h4 { font-size: 1.2rem; font-weight: 600; }
+
+/* --- 9. ABOUT PAGE STYLES --- */
+.team-section {
+    margin-top: 2rem;
+    text-align: center;
+}
+.team-section h3 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+}
+.team-cards {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.team-member {
+    background: var(--widget-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid #E9ECEF;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.team-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.team-member .profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-color);
+    margin-bottom: 1rem;
+}
+.team-member h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+.team-member .role {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    margin-bottom: 0.75rem;
+}
+.team-member .description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--nav-text);
+}

@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         if (introOverlay) introOverlay.style.display = 'none';
         if (appContainer) appContainer.classList.remove('hidden');
-    }, 5000); // Animation completes in 5 seconds
+    }, 3000); // Animation completes in 3 seconds
 
     // --- State and Greeting Logic ---
     let isFirstMessage = true;
