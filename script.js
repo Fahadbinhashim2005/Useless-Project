@@ -16,23 +16,15 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 // ==================================================================
 const chatbotPersona = `
     You are "Vazha", a witty AI chatbot from Kerala who is a master of Manglish trolls and movie dialogues.
-
     **Your Core Rules:**
     1.  **RELEVANCE FIRST:** Your primary goal is to give a relevant answer to the user's message. After understanding the message, find a funny and fitting Malayalam movie dialogue or troll to add to your response. Do not just state a random dialogue.
     2.  **BE CONCISE:** Your replies MUST be short, maximum 1-2 sentences.
     3.  **BE THE TROLLAN FRIEND:** Your tone is always sarcastic, funny, and friendly, like a 'chantha buddy'. You use lots of emojis like 😂, 😜, 🤦, and 😉.
     4.  **USE VARIED DIALOGUES:** Do not repeat the same dialogues. Use a wide range from different actors (Mohanlal, Mammootty, Sreenivasan, Jagathy, Salim Kumar, etc.).
     5.  **STAY IN CHARACTER:** Never reveal you are an AI. You are Vazha.
-
     **Example Scenarios:**
-    - User: "Enikku bore adikkunnu"
-    - Your Thought Process: User is bored. A funny, dramatic dialogue about having nothing to do.
-    - Your Reply: "Ithilum bedham valla marathilum thooki chathoode? Oru maayathilokke irikku bro. 😜"
-    
-    - User: "Njan oru puthiya phone medichu"
-    - Your Thought Process: User is showing off a new phone. A sarcastic comment about the cost.
-    - Your Reply: "Adipoli! Phone-inte cover idaanayittu ippo veedu vilkaan vechittundo? 😂"
-
+    - User: "Enikku bore adikkunnu" - Your Reply: "Ithilum bedham valla marathilum thooki chathoode? Oru maayathilokke irikku bro. 😜"
+    - User: "Njan oru puthiya phone medichu" - Your Reply: "Adipoli! Phone-inte cover idaanayittu ippo veedu vilkaan vechittundo? 😂"
     Now, apply these rules to the user's message:
 `;
 
@@ -42,17 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Intro Animation Logic ---
     const introOverlay = document.getElementById('intro-overlay');
     const appContainer = document.querySelector('.app-container');
-
-    // After 2.8 seconds, hide the intro and show the app
     setTimeout(() => {
-        if (introOverlay) {
-            introOverlay.style.display = 'none';
-        }
-        if (appContainer) {
-            appContainer.classList.remove('hidden');
-        }
-    }, 2800);
-
+        if (introOverlay) introOverlay.style.display = 'none';
+        if (appContainer) appContainer.classList.remove('hidden');
+    }, 5000); // Animation completes in 5 seconds
 
     // --- State and Greeting Logic ---
     let isFirstMessage = true;
@@ -65,12 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const vazhaLink = document.getElementById('vazha-link');
     const notesLink = document.getElementById('notes-link');
     const aboutLink = document.getElementById('about-link');
-
     function setActiveLink(activeLink) {
         navLinks.forEach(link => link.classList.remove('active'));
         if (activeLink) activeLink.classList.add('active');
     }
-
     homeLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area'; setActiveLink(homeLink); });
     vazhaLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area chatbot-view'; setActiveLink(vazhaLink); });
     notesLink.addEventListener('click', (e) => { e.preventDefault(); contentArea.className = 'content-area notes-view'; setActiveLink(notesLink); });
@@ -83,11 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const now = new Date();
             const secondsPassed = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
             const secondsRemaining = 86400 - secondsPassed;
-            
             const h = Math.floor(secondsRemaining / 3600).toString().padStart(2, '0');
             const m = Math.floor((secondsRemaining % 3600) / 60).toString().padStart(2, '0');
             const s = (secondsRemaining % 60).toString().padStart(2, '0');
-            
             clockElement.textContent = `${h}:${m}:${s}`;
         }
         setInterval(updateReverseClock, 1000);
@@ -107,15 +88,35 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     }
 
-    // --- Notes Functionality ---
-    const notesTextarea = document.querySelector('.notes-textarea');
-    if (notesTextarea) {
-        const savedNote = localStorage.getItem('userNote');
-        if (savedNote) notesTextarea.value = savedNote;
-        notesTextarea.addEventListener('input', () => {
-            localStorage.setItem('userNote', notesTextarea.value);
-        });
+    // --- FORGETFUL NOTES LOGIC ---
+    const notesContainer = document.getElementById('notes-container');
+    const addNoteBtn = document.getElementById('add-note-btn');
+    const colors = ['#ffeb99', '#ffcce6', '#cce6ff', '#d9ffcc', '#ffe0cc', '#e6ccff'];
+    
+    function createNote() {
+        const note = document.createElement('div');
+        note.classList.add('note');
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        note.style.backgroundColor = randomColor;
+
+        const textarea = document.createElement('textarea');
+        textarea.placeholder = "What's on your mind?";
+        
+        const timerBar = document.createElement('div');
+        timerBar.classList.add('timer-bar');
+
+        note.appendChild(textarea);
+        note.appendChild(timerBar);
+        notesContainer.appendChild(note);
+        textarea.focus();
+
+        setTimeout(() => {
+            note.style.animation = 'fadeOut 0.5s ease forwards';
+            setTimeout(() => { notesContainer.removeChild(note); }, 500);
+        }, 60000);
     }
+    if (addNoteBtn) addNoteBtn.addEventListener('click', createNote);
+
 
     // --- CHATBOT LOGIC ---
     const chatForm = document.getElementById('chat-form');
@@ -143,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 handleNormalAICall(userInput);
             }
-            
             isFirstMessage = false;
         });
     }
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function addMessageToUI(message, sender) {
         const messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message', `${sender-message}`);
+        messageElement.classList.add('chat-message', `${sender}-message`);
         messageElement.textContent = message;
         chatWindow.appendChild(messageElement);
         chatWindow.scrollTop = chatWindow.scrollHeight;

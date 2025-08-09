@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Josefin+Sans:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Josefin+Sans:wght@600&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -44,10 +44,10 @@
             <div class="side-widget left-widget">
                 <div class="widget notes-widget">
                     <div class="widget-header">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        <h3>Notes</h3>
+                        <h3><i class="fa-solid fa-pen-to-square"></i>Forgetful Notes</h3>
+                        <button id="add-note-btn">+ Add Note</button>
                     </div>
-                    <textarea class="notes-textarea" placeholder="Type your notes here..."></textarea>
+                    <div id="notes-container"></div>
                 </div>
             </div>
 
@@ -59,13 +59,10 @@
             <div class="side-widget right-widget">
                 <div class="widget chatbot-widget">
                     <div class="widget-header">
-                        <i class="fa-solid fa-robot"></i>
-                        <h3>Vazha (Chatbot)</h3>
+                        <h3><i class="fa-solid fa-robot"></i>Vazha (Chatbot)</h3>
                     </div>
                     <div class="chatbot-body">
-                         <div id="chat-window" class="chat-window">
-                            <!-- Chat messages will appear here -->
-                         </div>
+                         <div id="chat-window" class="chat-window"></div>
                          <form id="chat-form" class="chat-form">
                             <input type="text" id="chat-input" class="chat-input" placeholder="Ask me anything..." autocomplete="off">
                             <button type="submit">➤</button>

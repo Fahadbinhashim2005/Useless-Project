@@ -5,50 +5,33 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: var(--primary-bg);
+    background-color: var(--primary-bg, #FEFDF9);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeOutOverlay 3s forwards;
+    animation: fadeOutOverlay 5s forwards;
 }
-
 #intro-logo {
-    width: 150px; /* Adjust size as needed */
+    width: 150px;
     height: auto;
-    animation: scaleUpLogo 2.5s ease-in-out forwards;
+    animation: scaleUpLogo 4.5s ease-in-out forwards;
 }
-
 .app-container.hidden {
     opacity: 0;
     pointer-events: none;
 }
-
 .app-container {
-    transition: opacity 0.8s ease-in-out 2s; /* Start fading in after 2 seconds */
+    transition: opacity 0.8s ease-in-out 4.2s;
 }
-
 @keyframes scaleUpLogo {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(20);
-        opacity: 0;
-    }
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(30); opacity: 0; }
 }
-
 @keyframes fadeOutOverlay {
-    0%, 80% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        pointer-events: none;
-    }
+    0%, 80% { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
 }
-
 
 /* --- 1. SETUP & DEFAULTS --- */
 :root {
@@ -74,63 +57,14 @@ body {
 }
 
 /* --- 2. MAIN LAYOUT CONTAINERS --- */
-.app-container {
-    width: 100%;
-    max-width: 1400px;
-    height: 95vh;
-    max-height: 850px;
-    background-color: var(--container-bg);
-    border-radius: 25px;
-    box-shadow: var(--shadow);
-    padding: 1.5rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 50px;
-    position: relative;
-}
-.content-area {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    flex-grow: 1;
-    gap: 2.5rem;
-    min-height: 0;
-    transition: all 0.5s ease-in-out;
-}
+.app-container { width: 100%; max-width: 1400px; height: 95vh; max-height: 850px; background-color: var(--container-bg); border-radius: 25px; box-shadow: var(--shadow); padding: 1.5rem 2.5rem; display: flex; flex-direction: column; overflow: hidden; }
+.app-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 50px; position: relative; }
+.content-area { display: flex; justify-content: space-between; align-items: stretch; flex-grow: 1; gap: 2.5rem; min-height: 0; transition: all 0.5s ease-in-out; }
 
 /* --- 3. HEADER & NAVIGATION COMPONENTS --- */
-.logo {
-    font-family: 'Josefin Sans', sans-serif;
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--text-color);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.mini-logo {
-    height: 35px; /* Adjust size as needed */
-    width: auto;
-}
-
-.main-nav {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #fff;
-    padding: 0.8rem 1.5rem;
-    border-radius: 30px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    border: 1px solid #eee;
-}
+.logo { font-family: 'Josefin Sans', sans-serif; font-size: 2rem; font-weight: 600; color: var(--text-color); display: flex; align-items: center; gap: 10px; }
+.mini-logo { height: 35px; width: auto; }
+.main-nav { position: absolute; left: 50%; transform: translateX(-50%); background-color: #fff; padding: 0.8rem 1.5rem; border-radius: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); border: 1px solid #eee; }
 .nav-links { display: flex; list-style: none; gap: 1.5rem; }
 .nav-links a { text-decoration: none; color: var(--nav-text); font-weight: 500; transition: color 0.3s ease; display: flex; align-items: center; gap: 5px; cursor: pointer; }
 .nav-links a.active, .nav-links a:hover { color: var(--accent-color); }
@@ -142,88 +76,41 @@ body {
 .side-widget { flex: 1; display: flex; }
 .center-panel { flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
 .widget { background-color: var(--widget-bg); border: 1px solid #E9ECEF; border-radius: 15px; padding: 1.5rem; display: flex; flex-direction: column; width: 100%; }
-.widget-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; color: var(--text-color); }
+.widget-header { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; color: var(--text-color); }
 .widget-header i { color: var(--accent-color); }
-.widget-header h3 { font-weight: 600; }
-.notes-textarea { flex-grow: 1; border: none; background-color: var(--widget-bg); resize: none; font-family: 'Poppins', sans-serif; color: #555; font-size: 1rem; }
-.notes-textarea:focus { outline: none; }
+.widget-header h3 { font-weight: 600; display: flex; align-items: center; gap: 0.75rem; }
 .clock { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); font-family: monospace; font-weight: 700; color: #2d3436; padding: 0.8rem 1.5rem; border-radius: 15px; letter-spacing: 4px; text-align: center; margin-bottom: 1rem; }
 .character-image { max-width: 100%; max-height: 85%; object-fit: contain; align-self: center; }
 
-/* --- 5. CHATBOT WIDGET STYLES (INTEGRATED) --- */
-.chatbot-widget .chatbot-body {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-.chat-window {
-    flex-grow: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    margin-bottom: 1rem;
-}
-.chat-message {
-    padding: 10px 15px;
-    border-radius: 18px;
-    max-width: 85%;
-    line-height: 1.5;
-    word-wrap: break-word;
-}
-.user-message {
-    background-color: #e9e9eb;
-    color: #000;
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
-}
-.bot-message {
-    background-color: #007bff;
-    color: white;
-    align-self: flex-start;
-    border-bottom-left-radius: 4px;
-}
-#typing-indicator {
-    font-style: italic;
-    color: #999;
-    background-color: transparent !important;
-}
-.chat-form {
-    display: flex;
-    border-top: 1px solid #e0e0e0;
-    padding-top: 1rem;
-}
-.chat-input {
-    flex-grow: 1;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 10px 15px;
-    font-size: 1rem;
-    font-family: 'Poppins', sans-serif;
-    margin-right: 10px;
-}
+/* --- 5. FORGETFUL NOTES WIDGET --- */
+.notes-widget .widget-header { flex-wrap: wrap; }
+#add-note-btn { background: linear-gradient(45deg, #ff8a00, #e52e71); color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; }
+#add-note-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+#notes-container { display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; flex-grow: 1; padding: 5px; }
+.note { height: 200px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); padding: 1rem; border-bottom: 1px solid rgba(0,0,0,0.1); font-family: 'Kalam', cursive; font-size: 1.1rem; color: #333; animation: fadeIn 0.5s ease; position: relative; overflow: hidden; flex-shrink: 0; }
+.note textarea { width: 100%; height: 100%; border: none; background-color: transparent; resize: none; font-family: 'Kalam', cursive; font-size: 1.1rem; color: #333; }
+.note textarea:focus { outline: none; }
+.note .timer-bar { position: absolute; bottom: 0; left: 0; height: 4px; width: 100%; background-color: rgba(0, 0, 0, 0.2); animation: shrink 60s linear forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes fadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
+@keyframes shrink { from { width: 100%; } to { width: 0%; } }
+
+/* --- 6. CHATBOT WIDGET STYLES --- */
+.chatbot-widget .chatbot-body { flex-grow: 1; display: flex; flex-direction: column; min-height: 0; }
+.chat-window { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; margin-bottom: 1rem; }
+.chat-message { padding: 10px 15px; border-radius: 18px; max-width: 85%; line-height: 1.5; word-wrap: break-word; }
+.user-message { background-color: #e9e9eb; color: #000; align-self: flex-end; border-bottom-right-radius: 4px; }
+.bot-message { background-color: #007bff; color: white; align-self: flex-start; border-bottom-left-radius: 4px; }
+#typing-indicator { font-style: italic; color: #999; background-color: transparent !important; }
+.chat-form { display: flex; border-top: 1px solid #e0e0e0; padding-top: 1rem; }
+.chat-input { flex-grow: 1; border: 1px solid #ccc; border-radius: 20px; padding: 10px 15px; font-size: 1rem; font-family: 'Poppins', sans-serif; margin-right: 10px; }
 .chat-input:focus { outline: none; border-color: var(--accent-color); }
-.chat-form button {
-    border: none;
-    background-color: var(--accent-color);
-    color: white;
-    font-weight: 600;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease;
-    flex-shrink: 0;
-}
+.chat-form button { border: none; background-color: var(--accent-color); color: white; font-weight: 600; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; font-size: 1.2rem; transition: background-color 0.3s ease; flex-shrink: 0; }
 .chat-form button:hover { background-color: #e4a60b; }
 
-/* --- 6. MODAL STYLES --- */
+/* --- 7. MODAL STYLES --- */
 .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
 .modal-content { background-color: var(--container-bg); padding: 2.5rem; border-radius: 20px; width: 90%; max-width: 400px; position: relative; animation: fadeIn 0.5s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 .close-btn { color: #aaa; position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; cursor: pointer; }
 .close-btn:hover { color: #000; }
 .modal-content h2 { text-align: center; margin-bottom: 2rem; font-weight: 600; }
@@ -233,13 +120,11 @@ body {
 .login-btn { width: 100%; padding: 15px; border-radius: 10px; background: linear-gradient(45deg, #FFC107, #FDB813); border: none; color: white; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
 .login-btn:hover { box-shadow: 0 6px 20px rgba(253, 184, 19, 0.5); transform: translateY(-2px); }
 
-/* --- 7. VIEW-SWITCHING STYLES --- */
+/* --- 8. VIEW-SWITCHING STYLES --- */
 .about-panel { display: none; width: 100%; animation: fadeIn 0.5s ease-in-out; }
 .content-area.chatbot-view .left-widget, .content-area.chatbot-view .center-panel,
 .content-area.notes-view .right-widget, .content-area.notes-view .center-panel,
-.content-area.about-view .left-widget, .content-area.about-view .center-panel, .content-area.about-view .right-widget {
-    flex: 0; width: 0; opacity: 0; overflow: hidden; margin: 0; padding: 0; border: none;
-}
+.content-area.about-view .left-widget, .content-area.about-view .center-panel, .content-area.about-view .right-widget { flex: 0; width: 0; opacity: 0; overflow: hidden; margin: 0; padding: 0; border: none; }
 .content-area.chatbot-view .right-widget, .content-area.notes-view .left-widget { flex-grow: 1; }
 .content-area.about-view .about-panel { display: block; }
 .content-area.chatbot-view .chatbot-widget, .content-area.notes-view .notes-widget { height: 100%; }
